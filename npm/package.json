@@ -1,0 +1,29 @@
+{
+  "name": "@liejy/vue-countup",
+  "version": "0.1.1",
+  "description": "countup for vue.js. ",
+  "author": "liejiayong <809206619@qq.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/liejiayong/-liejy-vue-count.git"
+  },
+  "bugs": {
+    "url": "https://github.com/liejiayong/-liejy-vue-count/issues"
+  },
+  "keywords": [
+    "vue",
+    "counter",
+    "countup",
+    "count",
+    "characters",
+    "words",
+    "element"
+  ],
+  "main": "vue-countup.umd.js",
+  "module": "vue-countup.esm.js",
+  "unpkg": "vue-countup.min.js",
+  "scripts": {},
+  "dependencies": {},
+  "devDependencies": {}
+}
