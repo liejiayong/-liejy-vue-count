@@ -1,5 +1,9 @@
 # vue-countup
 
+## Feature
+
+- 新增兼容 ie11+
+
 ## Usage
 
 ### 引入模块

@@ -1,7 +1,7 @@
 <script>
-import { requestAnimationFrame, cancelAnimationFrame } from './raf.js';
+import './raf.js';
 export default {
-  name: 'JyLieCount',
+  name: 'JylieCount',
   props: {
     start: {
       type: Number,
@@ -114,10 +114,9 @@ export default {
     if (this.autoplay) {
       this._start();
     }
-    this.$emit('mounted');
   },
   destroyed() {
-    cancelAnimationFrame(this.rAF);
+    window.cancelAnimationFrame(this.rAF);
   },
   methods: {
     _start() {
@@ -125,7 +124,7 @@ export default {
       this.startTime = null;
       this.localDuration = this.duration;
       this.paused = false;
-      this.rAF = requestAnimationFrame(this.count);
+      this.rAF = window.requestAnimationFrame(this.count);
     },
     pauseResume() {
       if (this.paused) {
@@ -137,17 +136,17 @@ export default {
       }
     },
     pause() {
-      cancelAnimationFrame(this.rAF);
+      window.cancelAnimationFrame(this.rAF);
     },
     resume() {
       this.startTime = null;
       this.localDuration = +this.remaining;
       this.localStart = +this.printVal;
-      requestAnimationFrame(this.count);
+      window.requestAnimationFrame(this.count);
     },
     reset() {
       this.startTime = null;
-      cancelAnimationFrame(this.rAF);
+      window.cancelAnimationFrame(this.rAF);
       this.displayValue = this.formatNumber(this.start);
     },
     count(timestamp) {
@@ -185,7 +184,7 @@ export default {
       this.displayValue = formatNum;
       this.renderVNode = renderVNode;
       if (progress < this.localDuration) {
-        this.rAF = requestAnimationFrame(this.count);
+        this.rAF = window.requestAnimationFrame(this.count);
       } else {
         this.$emit('finish');
       }

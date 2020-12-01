@@ -12,10 +12,10 @@
 
   var isServer = typeof window === 'undefined';
   if (isServer) {
-    requestAnimationFrame = function () {
+    requestAnimationFrame = function() {
       return;
     };
-    cancelAnimationFrame = function () {
+    cancelAnimationFrame = function() {
       return;
     };
   } else {
@@ -23,20 +23,16 @@
     cancelAnimationFrame = window.cancelAnimationFrame;
     var prefix;
     for (var i = 0; i < prefixes.length; i++) {
-      if (requestAnimationFrame && cancelAnimationFrame) {
+      if (window.requestAnimationFrame && window.cancelAnimationFrame) {
         break;
       }
       prefix = prefixes[i];
-      requestAnimationFrame =
-        requestAnimationFrame || window[prefix + 'RequestAnimationFrame'];
-      cancelAnimationFrame =
-        cancelAnimationFrame ||
-        window[prefix + 'CancelAnimationFrame'] ||
-        window[prefix + 'CancelRequestAnimationFrame'];
+      requestAnimationFrame = requestAnimationFrame || window[prefix + 'RequestAnimationFrame'];
+      cancelAnimationFrame = cancelAnimationFrame || window[prefix + 'CancelAnimationFrame'] || window[prefix + 'CancelRequestAnimationFrame'];
     }
 
     if (!requestAnimationFrame || !cancelAnimationFrame) {
-      requestAnimationFrame = function (callback) {
+      window.requestAnimationFrame = function(callback) {
         var currTime = new Date().getTime();
         var timeToCall = Math.max(0, 16 - (currTime - lastTime));
         var id = window.setTimeout(function () {
@@ -46,14 +42,14 @@
         return id;
       };
 
-      cancelAnimationFrame = function (id) {
+      window.cancelAnimationFrame = function(id) {
         window.clearTimeout(id);
       };
     }
   }
 
   var script = {
-    name: 'JyLieCount',
+    name: 'JylieCount',
     props: {
       start: {
         type: Number,
@@ -166,10 +162,9 @@
       if (this.autoplay) {
         this._start();
       }
-      this.$emit('mounted');
     },
     destroyed: function destroyed() {
-      cancelAnimationFrame(this.rAF);
+      window.cancelAnimationFrame(this.rAF);
     },
     methods: {
       _start: function _start() {
@@ -177,7 +172,7 @@
         this.startTime = null;
         this.localDuration = this.duration;
         this.paused = false;
-        this.rAF = requestAnimationFrame(this.count);
+        this.rAF = window.requestAnimationFrame(this.count);
       },
       pauseResume: function pauseResume() {
         if (this.paused) {
@@ -189,17 +184,17 @@
         }
       },
       pause: function pause() {
-        cancelAnimationFrame(this.rAF);
+        window.cancelAnimationFrame(this.rAF);
       },
       resume: function resume() {
         this.startTime = null;
         this.localDuration = +this.remaining;
         this.localStart = +this.printVal;
-        requestAnimationFrame(this.count);
+        window.requestAnimationFrame(this.count);
       },
       reset: function reset() {
         this.startTime = null;
-        cancelAnimationFrame(this.rAF);
+        window.cancelAnimationFrame(this.rAF);
         this.displayValue = this.formatNumber(this.start);
       },
       count: function count(timestamp) {
@@ -237,7 +232,7 @@
         this.displayValue = formatNum;
         this.renderVNode = renderVNode;
         if (progress < this.localDuration) {
-          this.rAF = requestAnimationFrame(this.count);
+          this.rAF = window.requestAnimationFrame(this.count);
         } else {
           this.$emit('finish');
         }

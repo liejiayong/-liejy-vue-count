@@ -6,10 +6,10 @@ let cancelAnimationFrame;
 
 const isServer = typeof window === 'undefined';
 if (isServer) {
-  requestAnimationFrame = function () {
+  requestAnimationFrame = function() {
     return;
   };
-  cancelAnimationFrame = function () {
+  cancelAnimationFrame = function() {
     return;
   };
 } else {
@@ -17,20 +17,16 @@ if (isServer) {
   cancelAnimationFrame = window.cancelAnimationFrame;
   let prefix;
   for (let i = 0; i < prefixes.length; i++) {
-    if (requestAnimationFrame && cancelAnimationFrame) {
+    if (window.requestAnimationFrame && window.cancelAnimationFrame) {
       break;
     }
     prefix = prefixes[i];
-    requestAnimationFrame =
-      requestAnimationFrame || window[prefix + 'RequestAnimationFrame'];
-    cancelAnimationFrame =
-      cancelAnimationFrame ||
-      window[prefix + 'CancelAnimationFrame'] ||
-      window[prefix + 'CancelRequestAnimationFrame'];
+    requestAnimationFrame = requestAnimationFrame || window[prefix + 'RequestAnimationFrame'];
+    cancelAnimationFrame = cancelAnimationFrame || window[prefix + 'CancelAnimationFrame'] || window[prefix + 'CancelRequestAnimationFrame'];
   }
 
   if (!requestAnimationFrame || !cancelAnimationFrame) {
-    requestAnimationFrame = function (callback) {
+    window.requestAnimationFrame = function(callback) {
       const currTime = new Date().getTime();
       const timeToCall = Math.max(0, 16 - (currTime - lastTime));
       const id = window.setTimeout(() => {
@@ -40,10 +36,8 @@ if (isServer) {
       return id;
     };
 
-    cancelAnimationFrame = function (id) {
+    window.cancelAnimationFrame = function(id) {
       window.clearTimeout(id);
     };
   }
 }
-
-export { requestAnimationFrame, cancelAnimationFrame };
